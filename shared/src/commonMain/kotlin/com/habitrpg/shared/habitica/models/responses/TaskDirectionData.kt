@@ -1,4 +1,4 @@
-package com.habitrpg.android.habitica.models.responses
+package com.habitrpg.shared.habitica.models.responses
 
 /**
  * This class represent the data sent back from the API when calling /user/tasks/{id}/{direction}.
@@ -6,7 +6,7 @@ package com.habitrpg.android.habitica.models.responses
  * It also holds a delta, which represent the task value modification.
  * Created by MagicMicky on 12/06/2014.
  */
-class TaskDirectionData {
+class TaskDirectionData: SharedTaskDirectionData {
     var delta: Float = 0.toFloat()
     var _tmp: TaskDirectionDataTemp? = null
     var exp: Double = 0.0

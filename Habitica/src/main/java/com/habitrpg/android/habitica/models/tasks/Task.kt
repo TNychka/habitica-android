@@ -8,6 +8,8 @@ import com.habitrpg.android.habitica.R
 import com.habitrpg.android.habitica.models.Tag
 import com.habitrpg.android.habitica.models.user.Stats
 import com.habitrpg.android.habitica.ui.helpers.MarkdownParser
+import com.habitrpg.shared.habitica.models.SharedTask
+import com.habitrpg.shared.habitica.models.tasks.SharedChecklistItem
 import io.reactivex.functions.Consumer
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -16,8 +18,9 @@ import io.realm.annotations.PrimaryKey
 import org.json.JSONArray
 import org.json.JSONException
 import java.util.*
+import kotlin.collections.AbstractList
 
-open class Task : RealmObject, Parcelable {
+open class Task : SharedTask, RealmObject, Parcelable {
     @PrimaryKey
     @SerializedName("_id")
     var id: String? = null
@@ -30,9 +33,9 @@ open class Task : RealmObject, Parcelable {
     var text: String = ""
     var notes: String? = null
     @TaskTypes
-    var type: String = ""
+    override var type: String = ""
     var attribute: String? = Stats.STRENGTH
-    var value: Double = 0.0
+    override var value: Double = 0.0
     var tags: RealmList<Tag>? = RealmList()
     var dateCreated: Date? = null
     var position: Int = 0
@@ -44,7 +47,7 @@ open class Task : RealmObject, Parcelable {
     var counterDown: Int? = 0
     //todos/dailies
     var completed: Boolean = false
-    var checklist: RealmList<ChecklistItem>? = RealmList()
+    override var checklist: RealmList<ChecklistItem> = RealmList()
     var reminders: RealmList<RemindersItem>? = RealmList()
     //dailies
     var frequency: String? = null

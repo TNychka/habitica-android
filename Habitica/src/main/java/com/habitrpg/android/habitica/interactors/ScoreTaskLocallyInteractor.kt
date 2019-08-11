@@ -1,7 +1,7 @@
 package com.habitrpg.android.habitica.interactors
 
 import com.habitrpg.shared.habitica.models.TaskDirection
-import com.habitrpg.shared.habitica.models.TaskDirectionData
+import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
 import com.habitrpg.android.habitica.models.tasks.Task
 import com.habitrpg.android.habitica.models.user.Stats
 import com.habitrpg.android.habitica.models.user.User

@@ -20,7 +20,6 @@ import com.habitrpg.android.habitica.models.responses.HabitResponse;
 import com.habitrpg.android.habitica.models.responses.PostChatMessageResult;
 import com.habitrpg.android.habitica.models.responses.SkillResponse;
 import com.habitrpg.android.habitica.models.responses.Status;
-import com.habitrpg.shared.habitica.models.TaskDirectionData;
 import com.habitrpg.android.habitica.models.responses.UnlockResponse;
 import com.habitrpg.android.habitica.models.responses.VerifyUsernameResponse;
 import com.habitrpg.android.habitica.models.shops.Shop;
@@ -34,6 +33,7 @@ import com.habitrpg.android.habitica.models.tasks.TaskList;
 import com.habitrpg.android.habitica.models.user.Items;
 import com.habitrpg.android.habitica.models.user.Stats;
 import com.habitrpg.android.habitica.models.user.User;
+import com.habitrpg.shared.habitica.models.responses.TaskDirectionData;
 
 import java.util.List;
 import java.util.Map;
