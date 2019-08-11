@@ -6,8 +6,8 @@ import com.habitrpg.android.habitica.data.local.TaskLocalRepository
 import com.habitrpg.android.habitica.helpers.AppConfigManager
 import com.habitrpg.android.habitica.helpers.RxErrorHandler
 import com.habitrpg.android.habitica.interactors.ScoreTaskLocallyInteractor
-import com.habitrpg.android.habitica.models.responses.TaskDirection
-import com.habitrpg.android.habitica.models.responses.TaskDirectionData
+import com.habitrpg.shared.habitica.models.TaskDirection
+import com.habitrpg.shared.habitica.models.TaskDirectionData
 import com.habitrpg.android.habitica.models.responses.TaskScoringResult
 import com.habitrpg.android.habitica.models.tasks.*
 import com.habitrpg.android.habitica.models.user.User
