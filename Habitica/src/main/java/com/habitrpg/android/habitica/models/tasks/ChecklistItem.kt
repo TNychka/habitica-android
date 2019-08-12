@@ -17,7 +17,7 @@ open class ChecklistItem : SharedChecklistItem, RealmObject, Parcelable {
     @PrimaryKey
     var id: String? = null
     var text: String? = null
-    var completed: Boolean = false
+    override var completed: Boolean = false
     var position: Int = 0
 
     @JvmOverloads constructor(id: String? = null, text: String? = null, completed: Boolean = false) {

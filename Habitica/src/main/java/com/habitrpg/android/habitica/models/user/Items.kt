@@ -1,11 +1,12 @@
 package com.habitrpg.android.habitica.models.user
 
+import com.habitrpg.shared.habitica.models.user.SharedItems
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.util.*
 
-open class Items : RealmObject {
+open class Items : SharedItems, RealmObject {
 
     @PrimaryKey
     var userId: String? = null
@@ -64,7 +65,7 @@ open class Items : RealmObject {
     var lastDrop_date: Date? = null
 
     //private QuestContent quest;
-    var gear: Gear? = null
+    override var gear: Gear? = null
     var special: SpecialItems? = null
 
     constructor(currentMount: String, currentPet: String, lastDrop_count: Int, lastDrop_date: Date) {

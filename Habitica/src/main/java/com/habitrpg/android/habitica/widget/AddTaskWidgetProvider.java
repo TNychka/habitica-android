@@ -11,6 +11,7 @@ import android.widget.RemoteViews;
 
 import com.habitrpg.android.habitica.R;
 import com.habitrpg.android.habitica.models.tasks.Task;
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum;
 
 public class AddTaskWidgetProvider extends BaseWidgetProvider {
 
@@ -43,19 +44,19 @@ public class AddTaskWidgetProvider extends BaseWidgetProvider {
         String addText = "";
         int backgroundResource = R.drawable.widget_add_habit_background;
         switch (selectedTaskType) {
-            case Task.TYPE_HABIT:
+            case TaskEnum.TYPE_HABIT:
                 addText = this.getContext().getResources().getString(R.string.add_habit);
                 backgroundResource = R.drawable.widget_add_habit_background;
                 break;
-            case Task.TYPE_DAILY:
+            case TaskEnum.TYPE_DAILY:
                 addText = this.getContext().getResources().getString(R.string.add_daily);
                 backgroundResource = R.drawable.widget_add_daily_background;
                 break;
-            case Task.TYPE_TODO:
+            case TaskEnum.TYPE_TODO:
                 addText = this.getContext().getResources().getString(R.string.add_todo);
                 backgroundResource = R.drawable.widget_add_todo_background;
                 break;
-            case Task.TYPE_REWARD:
+            case TaskEnum.TYPE_REWARD:
                 addText = this.getContext().getResources().getString(R.string.add_reward);
                 backgroundResource = R.drawable.widget_add_reward_background;
                 break;
@@ -67,6 +68,6 @@ public class AddTaskWidgetProvider extends BaseWidgetProvider {
 
     private String getSelectedTaskType(int widgetId) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        return preferences.getString("add_task_widget_" + widgetId, Task.TYPE_HABIT);
+        return preferences.getString("add_task_widget_" + widgetId, TaskEnum.TYPE_HABIT);
     }
 }

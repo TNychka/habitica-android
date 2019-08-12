@@ -32,6 +32,7 @@ import com.habitrpg.android.habitica.ui.views.HabiticaEmojiTextView
 import com.habitrpg.android.habitica.ui.views.HabiticaIconsHelper
 import com.habitrpg.android.habitica.ui.views.dialogs.HabiticaAlertDialog
 import com.habitrpg.android.habitica.ui.views.social.UsernameLabel
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
 import net.pherth.android.emoji_library.EmojiParser
@@ -115,10 +116,10 @@ class ChallengeDetailFragment: BaseMainFragment() {
 
                 for (entry in taskList) {
                     when (entry.type) {
-                        Task.TYPE_TODO -> todos.add(entry)
-                        Task.TYPE_HABIT -> habits.add(entry)
-                        Task.TYPE_DAILY -> dailies.add(entry)
-                        Task.TYPE_REWARD -> rewards.add(entry)
+                        TaskEnum.TYPE_TODO -> todos.add(entry)
+                        TaskEnum.TYPE_HABIT -> habits.add(entry)
+                        TaskEnum.TYPE_DAILY -> dailies.add(entry)
+                        TaskEnum.TYPE_REWARD -> rewards.add(entry)
                     }
                 }
 

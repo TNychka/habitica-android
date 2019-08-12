@@ -11,6 +11,7 @@ import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
 import com.habitrpg.android.habitica.models.responses.TaskScoringResult
 import com.habitrpg.android.habitica.models.tasks.*
 import com.habitrpg.android.habitica.models.user.User
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
@@ -121,12 +122,12 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
             }
             if (task.type != "reward" && (task.value - localDelta) + res.delta != task.value) {
                 task.value = (task.value - localDelta) + res.delta
-                if (Task.TYPE_DAILY == task.type || Task.TYPE_TODO == task.type) {
+                if (TaskEnum.TYPE_DAILY == task.type || TaskEnum.TYPE_TODO == task.type) {
                     task.completed = up
-                    if (Task.TYPE_DAILY == task.type && up) {
+                    if (TaskEnum.TYPE_DAILY == task.type && up) {
                         task.streak = (task.streak ?: 0) + 1
                     }
-                } else if (Task.TYPE_HABIT == task.type) {
+                } else if (TaskEnum.TYPE_HABIT == task.type) {
                     if (up) {
                         task.counterUp = (task.counterUp ?: 0) + 1
                     } else {

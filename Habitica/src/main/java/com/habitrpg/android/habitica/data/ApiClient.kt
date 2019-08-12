@@ -18,6 +18,7 @@ import com.habitrpg.android.habitica.models.tasks.TaskList
 import com.habitrpg.android.habitica.models.user.Items
 import com.habitrpg.android.habitica.models.user.Stats
 import com.habitrpg.android.habitica.models.user.User
+import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
 import retrofit2.HttpException

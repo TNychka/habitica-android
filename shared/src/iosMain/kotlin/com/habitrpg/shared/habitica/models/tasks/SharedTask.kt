@@ -1,11 +1,9 @@
-package com.habitrpg.shared.habitica.models
-
-import com.habitrpg.shared.habitica.models.tasks.SharedChecklistItem
+package com.habitrpg.shared.habitica.models.tasks
 
 actual interface SharedTask {
     actual var value: Double
-    actual val checklist: NativeList<SharedChecklistItem>?
+    actual val checklist: List <SharedChecklistItem>?
     actual var type: String
-}
 
-actual class NativeList<SharedChecklistItem>
+    actual annotation class TaskTypes
+}

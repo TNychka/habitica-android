@@ -23,6 +23,7 @@ import com.habitrpg.android.habitica.extensions.getThemeColor
 import com.habitrpg.android.habitica.helpers.RxErrorHandler
 import com.habitrpg.android.habitica.models.Tag
 import com.habitrpg.android.habitica.models.tasks.Task
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import java.util.*
@@ -257,19 +258,19 @@ class TaskFilterDialog(context: Context, component: UserComponent?) : AlertDialo
     fun setTaskType(taskType: String, activeFilter: String?) {
         this.taskType = taskType
         when (taskType) {
-            Task.TYPE_HABIT -> {
+            TaskEnum.TYPE_HABIT -> {
                 taskTypeTitle.setText(R.string.habits)
                 allTaskFilter.setText(R.string.all)
                 secondTaskFilter.setText(R.string.weak)
                 thirdTaskFilter.setText(R.string.strong)
             }
-            Task.TYPE_DAILY -> {
+            TaskEnum.TYPE_DAILY -> {
                 taskTypeTitle.setText(R.string.dailies)
                 allTaskFilter.setText(R.string.all)
                 secondTaskFilter.setText(R.string.due)
                 thirdTaskFilter.setText(R.string.gray)
             }
-            Task.TYPE_TODO -> {
+            TaskEnum.TYPE_TODO -> {
                 taskTypeTitle.setText(R.string.todos)
                 allTaskFilter.setText(R.string.active)
                 secondTaskFilter.setText(R.string.dated)
@@ -286,10 +287,10 @@ class TaskFilterDialog(context: Context, component: UserComponent?) : AlertDialo
             checkedId = R.id.all_task_filter
         } else {
             when (activeFilter) {
-                Task.FILTER_ALL -> checkedId = R.id.all_task_filter
-                Task.FILTER_WEAK, Task.FILTER_DATED -> checkedId = R.id.second_task_filter
-                Task.FILTER_STRONG, Task.FILTER_GRAY, Task.FILTER_COMPLETED -> checkedId = R.id.third_task_filter
-                Task.FILTER_ACTIVE -> checkedId = if (taskType == Task.TYPE_DAILY) {
+                TaskEnum.FILTER_ALL -> checkedId = R.id.all_task_filter
+                TaskEnum.FILTER_WEAK, TaskEnum.FILTER_DATED -> checkedId = R.id.second_task_filter
+                TaskEnum.FILTER_STRONG, TaskEnum.FILTER_GRAY, TaskEnum.FILTER_COMPLETED -> checkedId = R.id.third_task_filter
+                TaskEnum.FILTER_ACTIVE -> checkedId = if (taskType == TaskEnum.TYPE_DAILY) {
                     R.id.second_task_filter
                 } else {
                     R.id.all_task_filter
@@ -305,20 +306,20 @@ class TaskFilterDialog(context: Context, component: UserComponent?) : AlertDialo
             return
         }
         when (checkedId) {
-            R.id.all_task_filter -> filterType = if (taskType != Task.TYPE_TODO) {
-                Task.FILTER_ALL
+            R.id.all_task_filter -> filterType = if (taskType != TaskEnum.TYPE_TODO) {
+                TaskEnum.FILTER_ALL
             } else {
-                Task.FILTER_ACTIVE
+                TaskEnum.FILTER_ACTIVE
             }
             R.id.second_task_filter -> when (taskType) {
-                Task.TYPE_HABIT -> filterType = Task.FILTER_WEAK
-                Task.FREQUENCY_DAILY -> filterType = Task.FILTER_ACTIVE
-                Task.TYPE_TODO -> filterType = Task.FILTER_DATED
+                TaskEnum.TYPE_HABIT -> filterType = TaskEnum.FILTER_WEAK
+                TaskEnum.FREQUENCY_DAILY -> filterType = TaskEnum.FILTER_ACTIVE
+                TaskEnum.TYPE_TODO -> filterType = TaskEnum.FILTER_DATED
             }
             R.id.third_task_filter -> when (taskType) {
-                Task.TYPE_HABIT -> filterType = Task.FILTER_STRONG
-                Task.FREQUENCY_DAILY -> filterType = Task.FILTER_GRAY
-                Task.TYPE_TODO -> filterType = Task.FILTER_COMPLETED
+                TaskEnum.TYPE_HABIT -> filterType = TaskEnum.FILTER_STRONG
+                TaskEnum.FREQUENCY_DAILY -> filterType = TaskEnum.FILTER_GRAY
+                TaskEnum.TYPE_TODO -> filterType = TaskEnum.FILTER_COMPLETED
             }
         }
         filtersChanged()

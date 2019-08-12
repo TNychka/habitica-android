@@ -20,6 +20,7 @@ import com.habitrpg.android.habitica.models.user.User
 import com.habitrpg.android.habitica.ui.activities.TaskFormActivity
 import com.habitrpg.android.habitica.ui.fragments.BaseMainFragment
 import com.habitrpg.android.habitica.ui.views.tasks.TaskFilterDialog
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.functions.Consumer
 import java.util.*
 import javax.inject.Inject
@@ -70,10 +71,10 @@ class TasksFragment : BaseMainFragment() {
 
         bottomNavigation?.onTabSelectedListener = {
             when (it) {
-                Task.TYPE_HABIT -> viewPager?.currentItem = 0
-                Task.TYPE_DAILY -> viewPager?.currentItem = 1
-                Task.TYPE_TODO -> viewPager?.currentItem = 2
-                Task.TYPE_REWARD -> viewPager?.currentItem = 3
+                TaskEnum.TYPE_HABIT -> viewPager?.currentItem = 0
+                TaskEnum.TYPE_DAILY -> viewPager?.currentItem = 1
+                TaskEnum.TYPE_TODO -> viewPager?.currentItem = 2
+                TaskEnum.TYPE_REWARD -> viewPager?.currentItem = 3
             }
             updateBottomBarBadges()
         }
@@ -165,10 +166,10 @@ class TasksFragment : BaseMainFragment() {
 
             override fun getItem(position: Int): androidx.fragment.app.Fragment {
                 val fragment: TaskRecyclerViewFragment = when (position) {
-                    0 -> TaskRecyclerViewFragment.newInstance(context, user, Task.TYPE_HABIT)
-                    1 -> TaskRecyclerViewFragment.newInstance(context, user, Task.TYPE_DAILY)
-                    3 -> RewardsRecyclerviewFragment.newInstance(context, user, Task.TYPE_REWARD)
-                    else -> TaskRecyclerViewFragment.newInstance(context, user, Task.TYPE_TODO)
+                    0 -> TaskRecyclerViewFragment.newInstance(context, user, TaskEnum.TYPE_HABIT)
+                    1 -> TaskRecyclerViewFragment.newInstance(context, user, TaskEnum.TYPE_DAILY)
+                    3 -> RewardsRecyclerviewFragment.newInstance(context, user, TaskEnum.TYPE_REWARD)
+                    else -> TaskRecyclerViewFragment.newInstance(context, user, TaskEnum.TYPE_TODO)
                 }
 
                 viewFragmentsDictionary?.put(position, fragment)
@@ -233,19 +234,19 @@ class TasksFragment : BaseMainFragment() {
                 val taskType = when (step.identifier) {
                     "habits" -> {
                         id = R.id.tab_habits
-                        Task.TYPE_HABIT
+                        TaskEnum.TYPE_HABIT
                     }
                     "dailies" -> {
                         id = R.id.tab_dailies
-                        Task.TYPE_DAILY
+                        TaskEnum.TYPE_DAILY
                     }
                     "todos" -> {
                         id = R.id.tab_todos
-                        Task.TYPE_TODO
+                        TaskEnum.TYPE_TODO
                     }
                     "rewards" -> {
                         id = R.id.tab_rewards
-                        Task.TYPE_REWARD
+                        TaskEnum.TYPE_REWARD
                     }
                     else -> ""
                 }
@@ -278,10 +279,10 @@ class TasksFragment : BaseMainFragment() {
         val additionalData = HashMap<String, Any>()
         additionalData["created task type"] = type
         additionalData["viewed task type"] = when (viewPager?.currentItem) {
-            0 -> Task.TYPE_HABIT
-            1 -> Task.TYPE_DAILY
-            2 -> Task.TYPE_TODO
-            3 -> Task.TYPE_REWARD
+            0 -> TaskEnum.TYPE_HABIT
+            1 -> TaskEnum.TYPE_DAILY
+            2 -> TaskEnum.TYPE_TODO
+            3 -> TaskEnum.TYPE_REWARD
             else -> ""
         }
         AmplitudeManager.sendEvent("open create task form", AmplitudeManager.EVENT_CATEGORY_BEHAVIOUR, AmplitudeManager.EVENT_HITTYPE_EVENT, additionalData)

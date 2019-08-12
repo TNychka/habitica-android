@@ -6,7 +6,7 @@ package com.habitrpg.shared.habitica.models.responses
  * It also holds a delta, which represent the task value modification.
  * Created by MagicMicky on 12/06/2014.
  */
-class TaskDirectionData: SharedTaskDirectionData {
+class TaskDirectionData {
     var delta: Float = 0.toFloat()
     var _tmp: TaskDirectionDataTemp? = null
     var exp: Double = 0.0
@@ -15,3 +15,4 @@ class TaskDirectionData: SharedTaskDirectionData {
     var mp: Double = 0.0
     var lvl: Int = 0
 }
+
