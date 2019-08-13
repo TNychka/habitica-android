@@ -15,4 +15,3 @@ class TaskDirectionData {
     var mp: Double = 0.0
     var lvl: Int = 0
 }
-
