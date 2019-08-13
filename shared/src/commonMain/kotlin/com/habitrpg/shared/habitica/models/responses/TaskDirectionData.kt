@@ -1,4 +1,4 @@
-package com.habitrpg.android.habitica.models.responses
+package com.habitrpg.shared.habitica.models.responses
 
 /**
  * This class represent the data sent back from the API when calling /user/tasks/{id}/{direction}.

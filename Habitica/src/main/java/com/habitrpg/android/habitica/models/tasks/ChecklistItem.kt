@@ -2,6 +2,7 @@ package com.habitrpg.android.habitica.models.tasks
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.habitrpg.shared.habitica.models.tasks.SharedChecklistItem
 
 import java.util.UUID
 
@@ -11,12 +12,12 @@ import io.realm.annotations.PrimaryKey
 /**
  * Created by viirus on 06/07/15.
  */
-open class ChecklistItem : RealmObject, Parcelable {
+open class ChecklistItem : SharedChecklistItem, RealmObject, Parcelable {
 
     @PrimaryKey
     var id: String? = null
     var text: String? = null
-    var completed: Boolean = false
+    override var completed: Boolean = false
     var position: Int = 0
 
     @JvmOverloads constructor(id: String? = null, text: String? = null, completed: Boolean = false) {

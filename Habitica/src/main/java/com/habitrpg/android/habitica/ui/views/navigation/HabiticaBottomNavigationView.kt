@@ -21,6 +21,7 @@ import com.habitrpg.android.habitica.extensions.getThemeColor
 import com.habitrpg.android.habitica.extensions.inflate
 import com.habitrpg.android.habitica.models.tasks.Task
 import com.habitrpg.android.habitica.ui.helpers.bindView
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 
 
 class HabiticaBottomNavigationView @JvmOverloads constructor(
@@ -32,23 +33,23 @@ class HabiticaBottomNavigationView @JvmOverloads constructor(
     var selectedPosition: Int
     get() {
         return when (activeTaskType) {
-            Task.TYPE_DAILY -> 1
-            Task.TYPE_REWARD -> 2
-            Task.TYPE_TODO -> 3
+            TaskEnum.TYPE_DAILY -> 1
+            TaskEnum.TYPE_REWARD -> 2
+            TaskEnum.TYPE_TODO -> 3
             else -> 0
         }
     }
     set(value) {
         activeTaskType = when (value) {
-            1 -> Task.TYPE_DAILY
-            2 -> Task.TYPE_TODO
-            3 -> Task.TYPE_REWARD
-            else -> Task.TYPE_HABIT
+            1 -> TaskEnum.TYPE_DAILY
+            2 -> TaskEnum.TYPE_TODO
+            3 -> TaskEnum.TYPE_REWARD
+            else -> TaskEnum.TYPE_HABIT
         }
     }
     var onTabSelectedListener: ((String) -> Unit)? = null
     var onAddListener:  ((String) -> Unit)? = null
-    var activeTaskType: String = Task.TYPE_HABIT
+    var activeTaskType: String = TaskEnum.TYPE_HABIT
     set(value) {
         field = value
         updateItemSelection()
@@ -66,10 +67,10 @@ class HabiticaBottomNavigationView @JvmOverloads constructor(
 
     init {
         inflate(R.layout.main_navigation_view, true)
-        habitsTab.setOnClickListener { activeTaskType = Task.TYPE_HABIT }
-        dailiesTab.setOnClickListener { activeTaskType = Task.TYPE_DAILY }
-        todosTab.setOnClickListener { activeTaskType = Task.TYPE_TODO }
-        rewardsTab.setOnClickListener { activeTaskType = Task.TYPE_REWARD }
+        habitsTab.setOnClickListener { activeTaskType = TaskEnum.TYPE_HABIT }
+        dailiesTab.setOnClickListener { activeTaskType = TaskEnum.TYPE_DAILY }
+        todosTab.setOnClickListener { activeTaskType = TaskEnum.TYPE_TODO }
+        rewardsTab.setOnClickListener { activeTaskType = TaskEnum.TYPE_REWARD }
         addButton.setOnClickListener {
             if (flipAddBehaviour) {
                 if (isShowingSubmenu) {
@@ -154,22 +155,22 @@ class HabiticaBottomNavigationView @JvmOverloads constructor(
 
         var pos = 4
         submenuWrapper.removeAllViews()
-        for (taskType in listOf(Task.TYPE_HABIT, Task.TYPE_DAILY, Task.TYPE_TODO, Task.TYPE_REWARD)) {
+        for (taskType in listOf(TaskEnum.TYPE_HABIT, TaskEnum.TYPE_DAILY, TaskEnum.TYPE_TODO, TaskEnum.TYPE_REWARD)) {
             val view = BottomNavigationSubmenuItem(context)
             when (taskType) {
-                Task.TYPE_HABIT -> {
+                TaskEnum.TYPE_HABIT -> {
                     view.icon = context.getDrawable(R.drawable.add_habit)
                     view.title = context.getString(R.string.habit)
                 }
-                Task.TYPE_DAILY -> {
+                TaskEnum.TYPE_DAILY -> {
                     view.icon = context.getDrawable(R.drawable.add_daily)
                     view.title = context.getString(R.string.daily)
                 }
-                Task.TYPE_TODO -> {
+                TaskEnum.TYPE_TODO -> {
                     view.icon = context.getDrawable(R.drawable.add_todo)
                     view.title = context.getString(R.string.todo)
                 }
-                Task.TYPE_REWARD -> {
+                TaskEnum.TYPE_REWARD -> {
                     view.icon = context.getDrawable(R.drawable.add_rewards)
                     view.title = context.getString(R.string.reward)
                 }
@@ -231,9 +232,9 @@ class HabiticaBottomNavigationView @JvmOverloads constructor(
     }
 
     private fun updateItemSelection() {
-        habitsTab.isActive = activeTaskType == Task.TYPE_HABIT
-        dailiesTab.isActive = activeTaskType == Task.TYPE_DAILY
-        todosTab.isActive = activeTaskType == Task.TYPE_TODO
-        rewardsTab.isActive = activeTaskType == Task.TYPE_REWARD
+        habitsTab.isActive = activeTaskType == TaskEnum.TYPE_HABIT
+        dailiesTab.isActive = activeTaskType == TaskEnum.TYPE_DAILY
+        todosTab.isActive = activeTaskType == TaskEnum.TYPE_TODO
+        rewardsTab.isActive = activeTaskType == TaskEnum.TYPE_REWARD
     }
 }

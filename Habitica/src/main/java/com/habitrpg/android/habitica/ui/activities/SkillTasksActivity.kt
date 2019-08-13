@@ -16,6 +16,7 @@ import com.habitrpg.android.habitica.models.tasks.Task
 import com.habitrpg.android.habitica.modules.AppModule
 import com.habitrpg.android.habitica.ui.fragments.skills.SkillTasksRecyclerViewFragment
 import com.habitrpg.android.habitica.ui.helpers.bindView
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.functions.Consumer
 import javax.inject.Inject
 import javax.inject.Named
@@ -53,9 +54,9 @@ class SkillTasksActivity : BaseActivity() {
             override fun getItem(position: Int): Fragment {
                 val fragment = SkillTasksRecyclerViewFragment()
                 when (position) {
-                    0 -> fragment.taskType = Task.TYPE_HABIT
-                    1 -> fragment.taskType = Task.TYPE_DAILY
-                    else -> fragment.taskType = Task.TYPE_TODO
+                    0 -> fragment.taskType = TaskEnum.TYPE_HABIT
+                    1 -> fragment.taskType = TaskEnum.TYPE_DAILY
+                    else -> fragment.taskType = TaskEnum.TYPE_TODO
                 }
 
                 compositeSubscription.add(fragment.taskSelectionEvents.subscribe(Consumer { task -> taskSelected(task) }, RxErrorHandler.handleEmptyError()))

@@ -17,6 +17,7 @@ import com.habitrpg.android.habitica.helpers.RxErrorHandler;
 import com.habitrpg.android.habitica.models.tasks.Task;
 import com.habitrpg.android.habitica.modules.AppModule;
 import com.habitrpg.android.habitica.ui.helpers.MarkdownParser;
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum;
 
 import net.pherth.android.emoji_library.EmojiHandler;
 
@@ -66,7 +67,7 @@ public abstract class TaskListFactory implements RemoteViewsService.RemoteViewsF
                 .firstElement()
                 .toObservable()
                 .flatMap(Observable::fromIterable)
-                .filter(task -> (task.getType().equals(Task.TYPE_TODO) && !task.getCompleted()) || task.isDisplayedActive())
+                .filter(task -> (task.getType().equals(TaskEnum.TYPE_TODO) && !task.getCompleted()) || task.isDisplayedActive())
                 .toList()
                 .flatMapMaybe(tasks -> taskRepository.getTaskCopies(tasks).firstElement())
                 .subscribeOn(AndroidSchedulers.mainThread())

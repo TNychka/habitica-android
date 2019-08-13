@@ -27,6 +27,7 @@ import com.habitrpg.android.habitica.ui.adapter.social.challenges.ChallengeTasks
 import com.habitrpg.android.habitica.ui.helpers.bindView
 import com.habitrpg.android.habitica.ui.views.HabiticaIconsHelper
 import com.habitrpg.android.habitica.ui.views.dialogs.HabiticaAlertDialog
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.Flowable
 import io.reactivex.functions.Consumer
 import java.util.*
@@ -355,10 +356,10 @@ class ChallengeFormActivity : BaseActivity() {
         challengeTasks.setTasks(taskList)
         compositeSubscription.add(challengeTasks.addItemObservable().subscribe(Consumer { t ->
             when (t) {
-                addHabit -> openNewTaskActivity(Task.TYPE_HABIT, null)
-                addDaily -> openNewTaskActivity(Task.TYPE_DAILY, null)
-                addTodo -> openNewTaskActivity(Task.TYPE_TODO, null)
-                addReward -> openNewTaskActivity(Task.TYPE_REWARD, null)
+                addHabit -> openNewTaskActivity(TaskEnum.TYPE_HABIT, null)
+                addDaily -> openNewTaskActivity(TaskEnum.TYPE_DAILY, null)
+                addTodo -> openNewTaskActivity(TaskEnum.TYPE_TODO, null)
+                addReward -> openNewTaskActivity(TaskEnum.TYPE_REWARD, null)
             }
         }, RxErrorHandler.handleEmptyError()))
 
@@ -449,9 +450,9 @@ class ChallengeFormActivity : BaseActivity() {
     private fun addOrUpdateTaskInList(task: Task, isExistingTask: Boolean = false) {
         if (!challengeTasks.replaceTask(task)) {
             val taskAbove: Task? = when (task.type) {
-                Task.TYPE_HABIT -> addHabit
-                Task.TYPE_DAILY -> addDaily
-                Task.TYPE_TODO -> addTodo
+                TaskEnum.TYPE_HABIT -> addHabit
+                TaskEnum.TYPE_DAILY -> addDaily
+                TaskEnum.TYPE_TODO -> addTodo
                 else -> addReward
             }
 
@@ -497,7 +498,7 @@ class ChallengeFormActivity : BaseActivity() {
             t.type = taskType
             t.text = taskName
 
-            if (taskType == Task.TYPE_HABIT) {
+            if (taskType == TaskEnum.TYPE_HABIT) {
                 t.up = true
                 t.down = false
             }

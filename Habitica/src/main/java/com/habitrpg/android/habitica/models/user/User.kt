@@ -7,13 +7,15 @@ import com.habitrpg.android.habitica.models.social.ChallengeMembership
 import com.habitrpg.android.habitica.models.social.UserParty
 import com.habitrpg.android.habitica.models.tasks.TaskList
 import com.habitrpg.android.habitica.models.tasks.TasksOrder
+import com.habitrpg.shared.habitica.models.user.SharedStats
+import com.habitrpg.shared.habitica.models.user.SharedUser
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
 import java.util.*
 
-open class User : RealmObject(), Avatar, VersionedObject {
+open class User : SharedUser, RealmObject(), Avatar, VersionedObject {
 
     @Ignore
     var tasks: TaskList? = null
@@ -82,7 +84,7 @@ open class User : RealmObject(), Avatar, VersionedObject {
                 party.userId = this.id
             }
         }
-    var items: Items? = null
+    override var items: Items? = null
         set(items) {
             field = items
             if (items != null && this.id != null && !items.isManaged) {
@@ -175,6 +177,10 @@ open class User : RealmObject(), Avatar, VersionedObject {
 
     override fun getStats(): Stats? {
         return stats
+    }
+
+    override fun setStats(stats: SharedStats?) {
+        setStats(stats as? Stats?)
     }
 
     fun setStats(stats: Stats?) {

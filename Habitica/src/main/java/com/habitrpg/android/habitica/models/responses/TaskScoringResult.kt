@@ -1,7 +1,8 @@
 package com.habitrpg.android.habitica.models.responses
 
-class TaskScoringResult {
+import com.habitrpg.shared.habitica.models.responses.TaskDirectionDataDrop
 
+class TaskScoringResult {
     var drop: TaskDirectionDataDrop? = null
     var experienceDelta: Double? = null
     var healthDelta: Double? = null

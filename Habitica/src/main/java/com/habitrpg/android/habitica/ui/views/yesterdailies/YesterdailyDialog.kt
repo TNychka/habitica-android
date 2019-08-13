@@ -20,6 +20,7 @@ import com.habitrpg.android.habitica.models.tasks.Task
 import com.habitrpg.android.habitica.ui.helpers.bindColor
 import com.habitrpg.android.habitica.ui.views.HabiticaEmojiTextView
 import com.habitrpg.android.habitica.ui.views.dialogs.HabiticaAlertDialog
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
@@ -157,7 +158,7 @@ class YesterdailyDialog private constructor(context: Context, private val userRe
                             cal.add(Calendar.DATE, -1)
                             taskRepository.updateDailiesIsDue(cal.time).firstElement()
                         }
-                        .flatMapMaybe { taskRepository.getTasks(Task.TYPE_DAILY, userId).firstElement() }
+                        .flatMapMaybe { taskRepository.getTasks(TaskEnum.TYPE_DAILY, userId).firstElement() }
                         .map { tasks -> tasks.where().equalTo("isDue", true).notEqualTo("completed", true).notEqualTo("yesterDaily", false).findAll() }
                         .flatMapMaybe<List<Task>> { tasks -> taskRepository.getTaskCopies(tasks).firstElement() }
                         .retry(1)

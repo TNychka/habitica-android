@@ -4,11 +4,12 @@ import android.content.Context
 import com.google.gson.annotations.SerializedName
 import com.habitrpg.android.habitica.R
 import com.habitrpg.android.habitica.models.HabitRpgClass
+import com.habitrpg.shared.habitica.models.user.SharedStats
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
 
-open class Stats : RealmObject() {
+open class Stats: SharedStats, RealmObject() {
 
     @PrimaryKey
     var userId: String? = null
@@ -24,24 +25,24 @@ open class Stats : RealmObject() {
 
     internal var user: User? = null
     @SerializedName("con")
-    var constitution: Int? = null
+    override var constitution: Int? = null
     @SerializedName("str")
-    var strength: Int? = null
+    override var strength: Int? = null
     @SerializedName("per")
-    var per: Int? = null
+    override var per: Int? = null
     @SerializedName("int")
-    var intelligence: Int? = null
+    override var intelligence: Int? = null
     var training: Training? = null
-    var buffs: Buffs? = null
+    override var buffs: Buffs? = null
     var points: Int? = null
-    var lvl: Int? = null
+    override var lvl: Int? = null
     @SerializedName("class")
     var habitClass: String? = null
-    var gp: Double? = null
-    var exp: Double? = null
-    var mp: Double? = null
-    var hp: Double? = null
-    var toNextLevel: Int? = null
+    override var gp: Double? = null
+    override var exp: Double? = null
+    override var mp: Double? = null
+    override var hp: Double? = null
+    override var toNextLevel: Int? = null
         get() = if (field != null) field else 0
         set(value) {
             if (value != 0) {
