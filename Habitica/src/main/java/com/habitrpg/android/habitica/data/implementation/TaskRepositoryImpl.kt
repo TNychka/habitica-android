@@ -2,6 +2,7 @@ package com.habitrpg.android.habitica.data.implementation
 
 import com.habitrpg.android.habitica.data.ApiClient
 import com.habitrpg.android.habitica.data.TaskRepository
+import com.habitrpg.android.habitica.data.OfflineRepository
 import com.habitrpg.android.habitica.data.local.TaskLocalRepository
 import com.habitrpg.android.habitica.helpers.AppConfigManager
 import com.habitrpg.android.habitica.helpers.RxErrorHandler
@@ -87,6 +88,7 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
 
         lastTaskAction = now
 
+        // TODO get stored taskActions from OfflineRepository.getTaskActions()
         return this.apiClient.bulkTaskScore(listOf(TaskScoreData(id, (if (up) TaskDirection.UP else TaskDirection.DOWN).text)))
                 .flatMapMaybe {
                     // There are cases where the user object is not set correctly. So the app refetches it as a fallback
@@ -114,6 +116,11 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
                     handleTaskResponse(user, res, task, up, localData?.delta ?: 0f)
                     result
                 }
+            OfflineRepository.emptyTaskActions()
+        }
+        catch (e: NetworkConnectivityExceptionExceptProbablyCalledSomethingElseIDKHelp) {
+            OfflineRepository.createTaskAction(id, (if(up) TaskDirection.UP else TaskDirection.DOWN).text)
+        }
     }
 
     private fun handleTaskResponse(user: User, res: TaskDirectionData, task: Task, up: Boolean, localDelta: Float) {

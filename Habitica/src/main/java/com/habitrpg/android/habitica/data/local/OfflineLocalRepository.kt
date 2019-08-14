@@ -5,7 +5,6 @@ import io.reactivex.Flowable
 import io.realm.RealmResults
 
 interface OfflineLocalRepository : BaseLocalRepository {
-    fun addTaskAction(taskAction: TaskAction)
     fun getTaskActions(): Flowable<RealmResults<TaskAction>>
     fun emptyTaskActions()
 }
