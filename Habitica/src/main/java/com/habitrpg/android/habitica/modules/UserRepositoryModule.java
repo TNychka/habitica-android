@@ -8,6 +8,7 @@ import com.habitrpg.android.habitica.data.ChallengeRepository;
 import com.habitrpg.android.habitica.data.CustomizationRepository;
 import com.habitrpg.android.habitica.data.FAQRepository;
 import com.habitrpg.android.habitica.data.InventoryRepository;
+import com.habitrpg.android.habitica.data.OfflineRepository;
 import com.habitrpg.android.habitica.data.SetupCustomizationRepository;
 import com.habitrpg.android.habitica.data.SocialRepository;
 import com.habitrpg.android.habitica.data.TagRepository;
@@ -18,6 +19,7 @@ import com.habitrpg.android.habitica.data.implementation.ChallengeRepositoryImpl
 import com.habitrpg.android.habitica.data.implementation.CustomizationRepositoryImpl;
 import com.habitrpg.android.habitica.data.implementation.FAQRepositoryImpl;
 import com.habitrpg.android.habitica.data.implementation.InventoryRepositoryImpl;
+import com.habitrpg.android.habitica.data.implementation.OfflineRepositoryImpl;
 import com.habitrpg.android.habitica.data.implementation.SetupCustomizationRepositoryImpl;
 import com.habitrpg.android.habitica.data.implementation.SocialRepositoryImpl;
 import com.habitrpg.android.habitica.data.implementation.TagRepositoryImpl;
@@ -68,8 +70,8 @@ public class UserRepositoryModule {
 
     @Provides
     @UserScope
-    TaskRepository providesTaskRepository(TaskLocalRepository localRepository, ApiClient apiClient, @Named(AppModule.NAMED_USER_ID) String userId, AppConfigManager appConfigManager) {
-        return new TaskRepositoryImpl(localRepository, apiClient, userId, appConfigManager);
+    TaskRepository providesTaskRepository(TaskLocalRepository localRepository, OfflineRepository offlineRepository, ApiClient apiClient, @Named(AppModule.NAMED_USER_ID) String userId, AppConfigManager appConfigManager) {
+        return new TaskRepositoryImpl(localRepository, offlineRepository, apiClient, userId, appConfigManager);
     }
 
     @Provides
@@ -155,5 +157,10 @@ public class UserRepositoryModule {
     @Provides
     OfflineLocalRepository providesOfflineLocalRepository(Realm realm) {
         return new RealmOfflineLocalRepository(realm);
+    }
+
+    @Provides
+    OfflineRepository providesOfflineRepository(OfflineLocalRepository localRepository, ApiClient apiClient, @Named(AppModule.NAMED_USER_ID) String userId) {
+        return new OfflineRepositoryImpl(localRepository, apiClient, userId);
     }
 }

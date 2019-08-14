@@ -1,17 +1,18 @@
 package com.habitrpg.android.habitica.data.implementation
 
 import com.habitrpg.android.habitica.data.ApiClient
-import com.habitrpg.android.habitica.data.TaskRepository
 import com.habitrpg.android.habitica.data.OfflineRepository
+import com.habitrpg.android.habitica.data.TaskRepository
+import com.habitrpg.android.habitica.data.local.OfflineLocalRepository
 import com.habitrpg.android.habitica.data.local.TaskLocalRepository
 import com.habitrpg.android.habitica.helpers.AppConfigManager
 import com.habitrpg.android.habitica.helpers.RxErrorHandler
-import com.habitrpg.shared.habitica.models.TaskDirection
-import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
 import com.habitrpg.android.habitica.models.responses.TaskScoringResult
 import com.habitrpg.android.habitica.models.tasks.*
 import com.habitrpg.android.habitica.models.user.User
 import com.habitrpg.shared.habitica.controllers.ScoreTaskLocallyInteractor
+import com.habitrpg.shared.habitica.models.TaskDirection
+import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
 import com.habitrpg.shared.habitica.models.responses.TaskScoreData
 import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.Flowable
@@ -24,7 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiClient, userID: String, val appConfigManager: AppConfigManager) : BaseRepositoryImpl<TaskLocalRepository>(localRepository, apiClient, userID), TaskRepository {
+class TaskRepositoryImpl(localRepository: TaskLocalRepository, private val offlineRepository: OfflineRepository, apiClient: ApiClient, userID: String, val appConfigManager: AppConfigManager) : BaseRepositoryImpl<TaskLocalRepository>(localRepository, apiClient, userID), TaskRepository {
     override fun getTasksOfType(taskType: String): Flowable<RealmResults<Task>> = getTasks(taskType, userID)
 
     private var lastTaskAction: Long = 0
@@ -63,7 +64,7 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
     @Suppress("ReturnCount")
     override fun taskChecked(user: User?, task: Task, up: Boolean, force: Boolean, notifyFunc: ((TaskScoringResult) -> Unit)?): Flowable<TaskScoringResult?> {
         val localData = if (user != null && appConfigManager.enableLocalTaskScoring()) {
-             ScoreTaskLocallyInteractor.score(user, task, if (up) TaskDirection.UP else TaskDirection.DOWN)
+            ScoreTaskLocallyInteractor.score(user, task, if (up) TaskDirection.UP else TaskDirection.DOWN)
         } else null
         if (user != null && localData != null) {
             val stats = user.stats
@@ -88,8 +89,9 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
 
         lastTaskAction = now
 
-        // TODO get stored taskActions from OfflineRepository.getTaskActions()
-        return this.apiClient.bulkTaskScore(listOf(TaskScoreData(id, (if (up) TaskDirection.UP else TaskDirection.DOWN).text)))
+        offlineRepository.createTaskAction(id, (if (up) TaskDirection.UP else TaskDirection.DOWN).text)
+        val scoring: List<TaskScoreData> = offlineRepository.getTaskActions().toList().blockingGet().flatMap{realmResults -> realmResults.map{taskAction -> TaskScoreData(taskAction.id, taskAction.direction) } }
+        return this.apiClient.bulkTaskScore(scoring)
                 .flatMapMaybe {
                     // There are cases where the user object is not set correctly. So the app refetches it as a fallback
                     if (user == null) {
@@ -114,13 +116,9 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
                         notifyFunc?.invoke(result)
                     }
                     handleTaskResponse(user, res, task, up, localData?.delta ?: 0f)
+                    offlineRepository.emptyTaskActions()
                     result
                 }
-            OfflineRepository.emptyTaskActions()
-        }
-        catch (e: NetworkConnectivityExceptionExceptProbablyCalledSomethingElseIDKHelp) {
-            OfflineRepository.createTaskAction(id, (if(up) TaskDirection.UP else TaskDirection.DOWN).text)
-        }
     }
 
     private fun handleTaskResponse(user: User, res: TaskDirectionData, task: Task, up: Boolean, localDelta: Float) {
@@ -177,7 +175,7 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
 
     override fun createTask(task: Task, force: Boolean): Flowable<Task> {
         val now = Date().time
-        if (lastTaskAction > now - 500  && !force) {
+        if (lastTaskAction > now - 500 && !force) {
             return Flowable.empty()
         }
         lastTaskAction = now
@@ -207,7 +205,7 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
     @Suppress("ReturnCount")
     override fun updateTask(task: Task, force: Boolean): Maybe<Task> {
         val now = Date().time
-        if ((lastTaskAction > now - 500  && !force)|| !task.isValid ) {
+        if ((lastTaskAction > now - 500 && !force) || !task.isValid) {
             return Maybe.just(task)
         }
         lastTaskAction = now

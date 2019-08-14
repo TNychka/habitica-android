@@ -6,8 +6,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import io.realm.RealmResults
 
-interface TagRepository : BaseRepository {
-
+interface OfflineRepository : BaseRepository {
 	fun getTaskActions(): Flowable<RealmResults<TaskAction>>
 	fun createTaskAction(taskId: String, direction: String)
 	fun emptyTaskActions()

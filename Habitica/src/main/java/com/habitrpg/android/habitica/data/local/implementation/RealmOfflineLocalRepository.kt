@@ -9,15 +9,16 @@ import io.realm.RealmResults
 
 class RealmOfflineLocalRepository(realm: Realm) : RealmBaseLocalRepository(realm), OfflineLocalRepository {
 
+    var id: Int = 0
     override fun getTaskActions(): Flowable<RealmResults<TaskAction>> {
         if (realm.isClosed) {
             return Flowable.empty()
         }
-    	return realm.where(TaskAction::class.java).findAll().asFlowable()
+        return realm.where(TaskAction::class.java).findAll().asFlowable()
     }
 
     override fun emptyTaskActions() {
-    	val localTaskActions = realm.where(TaskAction::class.java).findAll().createSnapshot()
+        val localTaskActions = realm.where(TaskAction::class.java).findAll().createSnapshot()
         realm.executeTransaction {
             for (item in localTaskActions) {
                 item.deleteFromRealm()

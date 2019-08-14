@@ -18,7 +18,7 @@ class OfflineRepositoryImpl(localRepository: OfflineLocalRepository, apiClient: 
     }
 
     override fun createTaskAction(taskId: String, direction: String) {
-        var newTaskAction: TaskAction
+        var newTaskAction = TaskAction()
         newTaskAction.id = id.toString()
         id++
         newTaskAction.taskId = taskId
