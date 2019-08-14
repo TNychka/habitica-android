@@ -2,6 +2,7 @@ package com.habitrpg.android.habitica.data.implementation
 
 import com.habitrpg.android.habitica.data.ApiClient
 import com.habitrpg.android.habitica.data.TaskRepository
+import com.habitrpg.android.habitica.data.OfflineRepository
 import com.habitrpg.android.habitica.data.local.TaskLocalRepository
 import com.habitrpg.android.habitica.helpers.AppConfigManager
 import com.habitrpg.android.habitica.helpers.RxErrorHandler
@@ -84,33 +85,39 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
         }
 
         lastTaskAction = now
-        return this.apiClient.postTaskDirection(id, (if (up) TaskDirection.UP else TaskDirection.DOWN).text)
-                .flatMapMaybe {
-                    // There are cases where the user object is not set correctly. So the app refetches it as a fallback
-                    if (user == null) {
-                        localRepository.getUser(userID).firstElement()
-                    } else {
-                        Maybe.just(user)
-                    }.map { user -> Pair(it, user) }
-                }
-                .map { (res, user): Pair<TaskDirectionData, User> ->
-                    // save local task changes
-                    val result = TaskScoringResult()
-                    val stats = user.stats
-
-                    result.healthDelta = res.hp - (stats?.hp ?: 0.0)
-                    result.experienceDelta = res.exp - (stats?.exp ?: 0.0)
-                    result.manaDelta = res.mp - (stats?.mp ?: 0.0)
-                    result.goldDelta = res.gp - (stats?.gp ?: 0.0)
-                    result.hasLeveledUp = res.lvl > stats?.lvl ?: 0
-                    result.questDamage = res._tmp?.quest?.progressDelta
-                    result.drop = res._tmp?.drop
-                    if (localData == null) {
-                        notifyFunc?.invoke(result)
+        try {
+            return this.apiClient.postTaskDirection(id, (if (up) TaskDirection.UP else TaskDirection.DOWN).text)
+                    .flatMapMaybe {
+                        // There are cases where the user object is not set correctly. So the app refetches it as a fallback
+                        if (user == null) {
+                            localRepository.getUser(userID).firstElement()
+                        } else {
+                            Maybe.just(user)
+                        }.map { user -> Pair(it, user) }
                     }
-                    handleTaskResponse(user, res, task, up, localData?.delta ?: 0f)
-                    result
-                }
+                    .map { (res, user): Pair<TaskDirectionData, User> ->
+                        // save local task changes
+                        val result = TaskScoringResult()
+                        val stats = user.stats
+
+                        result.healthDelta = res.hp - (stats?.hp ?: 0.0)
+                        result.experienceDelta = res.exp - (stats?.exp ?: 0.0)
+                        result.manaDelta = res.mp - (stats?.mp ?: 0.0)
+                        result.goldDelta = res.gp - (stats?.gp ?: 0.0)
+                        result.hasLeveledUp = res.lvl > stats?.lvl ?: 0
+                        result.questDamage = res._tmp?.quest?.progressDelta
+                        result.drop = res._tmp?.drop
+                        if (localData == null) {
+                            notifyFunc?.invoke(result)
+                        }
+                        handleTaskResponse(user, res, task, up, localData?.delta ?: 0f)
+                        result
+                    }
+            OfflineRepository.emptyTaskActions()
+        }
+        catch (e: NetworkConnectivityExceptionExceptProbablyCalledSomethingElseIDKHelp) {
+            OfflineRepository.createTaskAction(id, (if(up) TaskDirection.UP else TaskDirection.DOWN).text)
+        }
     }
 
     private fun handleTaskResponse(user: User, res: TaskDirectionData, task: Task, up: Boolean, localDelta: Float) {

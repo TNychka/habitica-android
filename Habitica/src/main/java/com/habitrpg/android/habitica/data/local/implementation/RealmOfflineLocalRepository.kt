@@ -8,9 +8,6 @@ import io.realm.RealmResults
 
 
 class RealmOfflineLocalRepository(realm: Realm) : RealmBaseLocalRepository(realm), OfflineLocalRepository {
-    override fun addTaskAction(taskAction: TaskAction) {
-    	realm.executeTransactionAsync { realm1 -> realm1.insertOrUpdate(taskAction) }
-    }
 
     override fun getTaskActions(): Flowable<RealmResults<TaskAction>> {
         if (realm.isClosed) {
