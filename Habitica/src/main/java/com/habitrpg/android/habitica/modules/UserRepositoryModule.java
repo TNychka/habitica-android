@@ -28,6 +28,7 @@ import com.habitrpg.android.habitica.data.local.ChallengeLocalRepository;
 import com.habitrpg.android.habitica.data.local.CustomizationLocalRepository;
 import com.habitrpg.android.habitica.data.local.FAQLocalRepository;
 import com.habitrpg.android.habitica.data.local.InventoryLocalRepository;
+import com.habitrpg.android.habitica.data.local.OfflineLocalRepository;
 import com.habitrpg.android.habitica.data.local.SocialLocalRepository;
 import com.habitrpg.android.habitica.data.local.TagLocalRepository;
 import com.habitrpg.android.habitica.data.local.TaskLocalRepository;
@@ -37,6 +38,7 @@ import com.habitrpg.android.habitica.data.local.implementation.RealmChallengeLoc
 import com.habitrpg.android.habitica.data.local.implementation.RealmCustomizationLocalRepository;
 import com.habitrpg.android.habitica.data.local.implementation.RealmFAQLocalRepository;
 import com.habitrpg.android.habitica.data.local.implementation.RealmInventoryLocalRepository;
+import com.habitrpg.android.habitica.data.local.implementation.RealmOfflineLocalRepository;
 import com.habitrpg.android.habitica.data.local.implementation.RealmSocialLocalRepository;
 import com.habitrpg.android.habitica.data.local.implementation.RealmTagLocalRepository;
 import com.habitrpg.android.habitica.data.local.implementation.RealmTaskLocalRepository;
@@ -148,5 +150,10 @@ public class UserRepositoryModule {
     @Provides
     CustomizationRepository providesCustomizationRepository(CustomizationLocalRepository localRepository, ApiClient apiClient, @Named(AppModule.NAMED_USER_ID) String userId) {
         return new CustomizationRepositoryImpl(localRepository, apiClient, userId);
+    }
+
+    @Provides
+    OfflineLocalRepository providesOfflineLocalRepository(Realm realm) {
+        return new RealmOfflineLocalRepository(realm);
     }
 }

@@ -12,6 +12,7 @@ import com.habitrpg.android.habitica.R
 import com.habitrpg.android.habitica.models.tasks.Task
 import com.habitrpg.android.habitica.ui.helpers.bindView
 import com.habitrpg.android.habitica.widget.AddTaskWidgetProvider
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 
 class AddTaskWidgetActivity : AppCompatActivity() {
 
@@ -46,19 +47,19 @@ class AddTaskWidgetActivity : AppCompatActivity() {
     }
 
     private fun addHabitSelected() {
-        finishWithSelection(Task.TYPE_HABIT)
+        finishWithSelection(TaskEnum.TYPE_HABIT)
     }
 
     private fun addDailySelected() {
-        finishWithSelection(Task.TYPE_DAILY)
+        finishWithSelection(TaskEnum.TYPE_DAILY)
     }
 
     private fun addToDoSelected() {
-        finishWithSelection(Task.TYPE_TODO)
+        finishWithSelection(TaskEnum.TYPE_TODO)
     }
 
     private fun addRewardSelected() {
-        finishWithSelection(Task.TYPE_REWARD)
+        finishWithSelection(TaskEnum.TYPE_REWARD)
     }
 
     private fun finishWithSelection(selectedTaskType: String) {

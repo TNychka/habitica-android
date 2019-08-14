@@ -176,7 +176,7 @@ class ClassSelectionActivity : BaseActivity(), Consumer<User> {
         user.preferences = preferences
         user.items = Items()
         user.items?.gear = Gear()
-        user.items?.gear?.equipped = outfit
+        user.items?.gear?.setEquipped(outfit)
         return user
     }
 

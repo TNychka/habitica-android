@@ -1,7 +1,7 @@
 package com.habitrpg.android.habitica.data.local.implementation
 
 import com.habitrpg.android.habitica.data.local.OfflineLocalRepository
-import com.habitrpg.android.habitica.offline.TaskAction
+import com.habitrpg.android.habitica.models.offline.TaskAction
 import io.reactivex.Flowable
 import io.realm.Realm
 import io.realm.RealmResults

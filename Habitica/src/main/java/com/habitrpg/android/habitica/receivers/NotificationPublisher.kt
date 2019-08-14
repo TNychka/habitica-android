@@ -22,6 +22,7 @@ import com.habitrpg.android.habitica.helpers.notifications.createOrUpdateHabitic
 import com.habitrpg.android.habitica.models.tasks.Task
 import com.habitrpg.android.habitica.models.user.User
 import com.habitrpg.android.habitica.ui.activities.MainActivity
+import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
 import io.realm.RealmResults
@@ -64,7 +65,7 @@ class NotificationPublisher : BroadcastReceiver() {
         }
         val checkDailies = intent.getBooleanExtra(CHECK_DAILIES, false)
         if (checkDailies) {
-            taskRepository.getTasks(Task.TYPE_DAILY).firstElement().zipWith(userRepository.getUser().firstElement(), BiFunction<RealmResults<Task>, User, Pair<RealmResults<Task>, User>> { tasks, user ->
+            taskRepository.getTasks(TaskEnum.TYPE_DAILY).firstElement().zipWith(userRepository.getUser().firstElement(), BiFunction<RealmResults<Task>, User, Pair<RealmResults<Task>, User>> { tasks, user ->
                 return@BiFunction Pair(tasks, user)
             }).subscribe(Consumer { pair ->
                 var showNotifications = false
