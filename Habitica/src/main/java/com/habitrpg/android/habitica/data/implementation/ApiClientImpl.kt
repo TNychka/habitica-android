@@ -37,6 +37,7 @@ import com.habitrpg.android.habitica.models.user.Stats
 import com.habitrpg.android.habitica.models.user.User
 import com.habitrpg.android.habitica.proxy.CrashlyticsProxy
 import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
+import com.habitrpg.shared.habitica.models.responses.TaskScoreData
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -421,6 +422,10 @@ class ApiClientImpl//private OnHabitsAPIResult mResultListener;
 
     override fun deleteTask(id: String): Flowable<Void> {
         return apiService.deleteTask(id).compose(configureApiCallObserver())
+    }
+
+    override fun bulkTaskScore(tasks: List<TaskScoreData>): Flowable<TaskDirectionData> {
+        return apiService.bulkTaskScore(tasks).compose(configureApiCallObserver())
     }
 
     override fun createTag(tag: Tag): Flowable<Tag> {

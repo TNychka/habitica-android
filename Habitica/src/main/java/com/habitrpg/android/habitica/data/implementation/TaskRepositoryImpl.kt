@@ -5,12 +5,13 @@ import com.habitrpg.android.habitica.data.TaskRepository
 import com.habitrpg.android.habitica.data.local.TaskLocalRepository
 import com.habitrpg.android.habitica.helpers.AppConfigManager
 import com.habitrpg.android.habitica.helpers.RxErrorHandler
-import com.habitrpg.android.habitica.interactors.ScoreTaskLocallyInteractor
 import com.habitrpg.shared.habitica.models.TaskDirection
 import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
 import com.habitrpg.android.habitica.models.responses.TaskScoringResult
 import com.habitrpg.android.habitica.models.tasks.*
 import com.habitrpg.android.habitica.models.user.User
+import com.habitrpg.shared.habitica.controllers.ScoreTaskLocallyInteractor
+import com.habitrpg.shared.habitica.models.responses.TaskScoreData
 import com.habitrpg.shared.habitica.models.tasks.TaskEnum
 import io.reactivex.Flowable
 import io.reactivex.Maybe
@@ -85,7 +86,8 @@ class TaskRepositoryImpl(localRepository: TaskLocalRepository, apiClient: ApiCli
         }
 
         lastTaskAction = now
-        return this.apiClient.postTaskDirection(id, (if (up) TaskDirection.UP else TaskDirection.DOWN).text)
+
+        return this.apiClient.bulkTaskScore(listOf(TaskScoreData(id, (if (up) TaskDirection.UP else TaskDirection.DOWN).text)))
                 .flatMapMaybe {
                     // There are cases where the user object is not set correctly. So the app refetches it as a fallback
                     if (user == null) {

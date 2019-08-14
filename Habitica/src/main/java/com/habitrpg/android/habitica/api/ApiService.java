@@ -33,7 +33,9 @@ import com.habitrpg.android.habitica.models.tasks.TaskList;
 import com.habitrpg.android.habitica.models.user.Items;
 import com.habitrpg.android.habitica.models.user.Stats;
 import com.habitrpg.android.habitica.models.user.User;
+import com.habitrpg.shared.habitica.models.responses.TaskDirection;
 import com.habitrpg.shared.habitica.models.responses.TaskDirectionData;
+import com.habitrpg.shared.habitica.models.responses.TaskScoreData;
 
 import java.util.List;
 import java.util.Map;
@@ -145,6 +147,8 @@ public interface ApiService {
     @DELETE("tasks/{id}")
     Flowable<HabitResponse<Void>> deleteTask(@Path("id") String id);
 
+    @POST("tasks/bulk-score")
+    Flowable<HabitResponse<TaskDirectionData>> bulkTaskScore(@Body List<TaskScoreData> tasks);
 
     @POST("tags")
     Flowable<HabitResponse<Tag>> createTag(@Body Tag tag);

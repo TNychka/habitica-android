@@ -19,6 +19,7 @@ import com.habitrpg.android.habitica.models.user.Items
 import com.habitrpg.android.habitica.models.user.Stats
 import com.habitrpg.android.habitica.models.user.User
 import com.habitrpg.shared.habitica.models.responses.TaskDirectionData
+import com.habitrpg.shared.habitica.models.responses.TaskScoreData
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
 import retrofit2.HttpException
@@ -94,6 +95,8 @@ interface ApiClient {
     fun updateTask(id: String, item: Task): Flowable<Task>
 
     fun deleteTask(id: String): Flowable<Void>
+
+    fun bulkTaskScore(tasks: List<TaskScoreData>): Flowable<TaskDirectionData>
 
 
     fun createTag(tag: Tag): Flowable<Tag>
